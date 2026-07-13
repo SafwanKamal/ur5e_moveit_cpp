@@ -16,6 +16,7 @@ find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 find_package(ament_index_cpp REQUIRED)
+find_package(geometric_shapes REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -144,6 +145,67 @@ ament_target_dependencies(
   ament_index_cpp
 )
 
+add_executable(
+  check_surface_toolpath_ik
+  src/check_surface_toolpath_ik.cpp
+)
+
+ament_target_dependencies(
+  check_surface_toolpath_ik
+  rclcpp
+  geometry_msgs
+  moveit_ros_planning_interface
+  moveit_core
+  tf2
+  ament_index_cpp
+)
+
+add_executable(
+  add_mesh_collision_object
+  src/add_mesh_collision_object.cpp
+)
+
+ament_target_dependencies(
+  add_mesh_collision_object
+  rclcpp
+  geometry_msgs
+  moveit_msgs
+  shape_msgs
+  tf2
+  geometric_shapes
+)
+
+add_executable(
+  plan_surface_toolpath
+  src/plan_surface_toolpath.cpp
+)
+
+ament_target_dependencies(
+  plan_surface_toolpath
+  rclcpp
+  geometry_msgs
+  moveit_msgs
+  moveit_ros_planning_interface
+  moveit_core
+  tf2
+  ament_index_cpp
+)
+
+add_executable(
+  plan_execute_surface_toolpath
+  src/plan_execute_surface_toolpath.cpp
+)
+
+ament_target_dependencies(
+  plan_execute_surface_toolpath
+  rclcpp
+  geometry_msgs
+  moveit_msgs
+  moveit_ros_planning_interface
+  moveit_core
+  tf2
+  ament_index_cpp
+)
 
 install(TARGETS
   simple_joint_motion
@@ -159,6 +221,10 @@ install(TARGETS
   parameterized_shape_adder
   hemisphere_surface_demo
   visualize_surface_toolpath
+  check_surface_toolpath_ik
+  add_mesh_collision_object
+  plan_surface_toolpath
+  plan_execute_surface_toolpath
   DESTINATION lib/${PROJECT_NAME}
 )
 
