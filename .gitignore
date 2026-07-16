@@ -1,0 +1,11 @@
+build/
+install/
+log/
+.vscode/
+generated_urdf/
+
+__pycache__/
+*.pyc
+*.pyo
+
+.DS_Store

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--
+    This macro creates one tool attached to a UR5e flange frame.
+
+    The STL was exported with its own baked-in offset.
+    We compensate for that inside the mesh origin.
+  -->
+
+  <xacro:macro name="probe_tool" params="parent_link">
+
+    <link name="probe_tool_link">
+
+      <visual>
+        <!-- STL offset in METERS -->
+        <origin xyz="0 -1.0794 -0.227868" rpy="0 0 0"/>
+
+        <geometry>
+          <mesh
+            filename="package://ur5e_toolheads/meshes/e-Series_UR5e_Probe.stl"
+            scale="0.001 0.001 0.001"/>
+        </geometry>
+
+        <material name="probe_gray">
+          <color rgba="0.35 0.35 0.35 1.0"/>
+        </material>
+      </visual>
+
+      <collision>
+        <origin xyz="0 -1.0794 -0.227868" rpy="0 0 0"/>
+
+        <geometry>
+          <mesh
+            filename="package://ur5e_toolheads/meshes/e-Series_UR5e_Probe.stl"
+            scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+
+    </link>
+
+    <!-- Attach the logical tool frame to the UR5e physical flange -->
+    <joint name="flange_to_probe_tool" type="fixed">
+      <parent link="${parent_link}"/>
+      <child link="probe_tool_link"/>
+      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+    </joint>
+
+    <!-- First approximate TCP. We refine this after RViz verification. -->
+    <link name="probe_tcp"/>
+
+    <joint name="probe_tool_to_tcp" type="fixed">
+      <parent link="probe_tool_link"/>
+      <child link="probe_tcp"/>
+      <origin xyz="0 0 0.050032" rpy="0 0 0"/>
+    </joint>
+
+  </xacro:macro>
+</robot>

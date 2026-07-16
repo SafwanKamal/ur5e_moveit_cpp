@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot name="ur5e_with_probe_mock" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <link name="world"/>
+
+  <!-- Reusable UR5e robot macro -->
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+
+  <!-- Your custom probe macro -->
+  <xacro:include filename="$(find ur5e_toolheads)/urdf/probe_tool.xacro"/>
+
+  <xacro:include filename="$(find ur5e_toolheads)/urdf/mock_ros2_control.xacro"/>
+
+  <xacro:arg name="ur_type" default="ur5e"/>
+
+  <xacro:arg
+    name="joint_limits_parameters_file"
+    default="$(find ur_description)/config/ur5e/joint_limits.yaml"/>
+
+  <xacro:arg
+    name="kinematics_parameters_file"
+    default="$(find ur_description)/config/ur5e/default_kinematics.yaml"/>
+
+  <xacro:arg
+    name="physical_parameters_file"
+    default="$(find ur_description)/config/ur5e/physical_parameters.yaml"/>
+
+  <xacro:arg
+    name="visual_parameters_file"
+    default="$(find ur_description)/config/ur5e/visual_parameters.yaml"/>
+
+  <!-- Generate the UR5e body -->
+  <xacro:ur_robot
+    name="ur5e"
+    tf_prefix=""
+    parent="world"
+    joint_limits_parameters_file="$(arg joint_limits_parameters_file)"
+    kinematics_parameters_file="$(arg kinematics_parameters_file)"
+    physical_parameters_file="$(arg physical_parameters_file)"
+    visual_parameters_file="$(arg visual_parameters_file)"
+    >
+
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+
+  </xacro:ur_robot>
+
+  <!-- Attach custom probe to the physical flange -->
+  <xacro:probe_tool parent_link="flange"/>
+
+  <xacro:ur5e_mock_ros2_control/>
+</robot>
